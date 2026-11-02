@@ -1,0 +1,21 @@
+# build output
+bin/
+obj/
+*.pdb
+*.user
+
+# published app
+/D:/550c-project/550C Hub/
+
+# runtime/user data
+items/
+archive-layout.json
+archive-state.json
+
+# debug screenshots
+_screenshots/
+_dock-backup/
+
+# misc
+*.log
+.vs/

@@ -1,0 +1,217 @@
+<Window x:Class="DesktopHub.DockWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        Title="550C Dock"
+        Icon="icon.ico"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        ShowInTaskbar="False" Topmost="False" ShowActivated="False"
+        ResizeMode="NoResize"
+        WindowStartupLocation="Manual">
+
+    <Window.Resources>
+        <Storyboard x:Key="ScanAnim" RepeatBehavior="Forever">
+            <DoubleAnimation Storyboard.TargetName="ScanLine"
+                             Storyboard.TargetProperty="Opacity"
+                             From="0.10" To="0.55" Duration="0:0:1.8"
+                             AutoReverse="True"/>
+        </Storyboard>
+
+        <Style x:Key="HubKey" TargetType="Button">
+            <Setter Property="Background" Value="#1AE8B04A"/>
+            <Setter Property="Foreground" Value="#B08A5C"/>
+            <Setter Property="BorderBrush" Value="#55E8B04A"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="1">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="#FFE8B04A"/>
+                    <Setter Property="Background" Value="#33E8B04A"/>
+                    <Setter Property="BorderBrush" Value="#CCE8B04A"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid x:Name="RootGrid">
+        <!-- layered frame: outer hairline + inner inset line -->
+        <Rectangle Stroke="#2EE8B04A" StrokeThickness="1.8" RadiusX="1" RadiusY="1"
+                   IsHitTestVisible="False"/>
+        <Rectangle Stroke="#17E8B04A" StrokeThickness="1.2" RadiusX="1" RadiusY="1"
+                   Margin="3" IsHitTestVisible="False"/>
+
+        <!-- travelling light: two bands, brighter with a thicker core -->
+        <Grid ClipToBounds="True" IsHitTestVisible="False">
+            <!-- wide halo band -->
+            <Rectangle Height="2.6" Width="300" HorizontalAlignment="Left" VerticalAlignment="Top"
+                       Opacity="0.8">
+                <Rectangle.Fill>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop Color="#00E8B04A" Offset="0.00"/>
+                        <GradientStop Color="#55E8B04A" Offset="0.30"/>
+                        <GradientStop Color="#E6E8B04A" Offset="0.50"/>
+                        <GradientStop Color="#55E8B04A" Offset="0.70"/>
+                        <GradientStop Color="#00E8B04A" Offset="1.00"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+                <Rectangle.RenderTransform>
+                    <TranslateTransform x:Name="SweepTop" X="-300"/>
+                </Rectangle.RenderTransform>
+                <Rectangle.Triggers>
+                    <EventTrigger RoutedEvent="Loaded">
+                        <BeginStoryboard>
+                            <Storyboard RepeatBehavior="Forever">
+                                <DoubleAnimation Storyboard.TargetName="SweepTop"
+                                                 Storyboard.TargetProperty="X"
+                                                 From="-300" To="1500" Duration="0:0:6"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Rectangle.Triggers>
+            </Rectangle>
+
+            <!-- thicker core travelling with it, tapered at both ends -->
+            <Rectangle Height="4" Width="86" HorizontalAlignment="Left" VerticalAlignment="Top"
+                       Opacity="0.9">
+                <Rectangle.Fill>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop Color="#00F0C15A" Offset="0.00"/>
+                        <GradientStop Color="#66F0C15A" Offset="0.25"/>
+                        <GradientStop Color="#FFF0C15A" Offset="0.50"/>
+                        <GradientStop Color="#66F0C15A" Offset="0.75"/>
+                        <GradientStop Color="#00F0C15A" Offset="1.00"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+                <Rectangle.RenderTransform>
+                    <TranslateTransform x:Name="SweepCore" X="107"/>
+                </Rectangle.RenderTransform>
+                <Rectangle.Triggers>
+                    <EventTrigger RoutedEvent="Loaded">
+                        <BeginStoryboard>
+                            <Storyboard RepeatBehavior="Forever">
+                                <DoubleAnimation Storyboard.TargetName="SweepCore"
+                                                 Storyboard.TargetProperty="X"
+                                                 From="-193" To="1607" Duration="0:0:6"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Rectangle.Triggers>
+            </Rectangle>
+
+            <!-- bottom band -->
+            <Rectangle Height="2.6" Width="300" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                       Opacity="0.8">
+                <Rectangle.Fill>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop Color="#00E8B04A" Offset="0.00"/>
+                        <GradientStop Color="#55E8B04A" Offset="0.30"/>
+                        <GradientStop Color="#E6E8B04A" Offset="0.50"/>
+                        <GradientStop Color="#55E8B04A" Offset="0.70"/>
+                        <GradientStop Color="#00E8B04A" Offset="1.00"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+                <Rectangle.RenderTransform>
+                    <TranslateTransform x:Name="SweepBottom" X="1500"/>
+                </Rectangle.RenderTransform>
+                <Rectangle.Triggers>
+                    <EventTrigger RoutedEvent="Loaded">
+                        <BeginStoryboard>
+                            <Storyboard RepeatBehavior="Forever">
+                                <DoubleAnimation Storyboard.TargetName="SweepBottom"
+                                                 Storyboard.TargetProperty="X"
+                                                 From="1500" To="-300" Duration="0:0:6"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Rectangle.Triggers>
+            </Rectangle>
+        </Grid>
+
+        <!-- body: same fill as the archive window -->
+        <Grid Margin="2">
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0.72,1">
+                    <GradientStop Color="#F51A1610" Offset="0"/>
+                    <GradientStop Color="#F50E0C0A" Offset="1"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Canvas Grid.ColumnSpan="2" x:Name="DockStars" IsHitTestVisible="False" ClipToBounds="True"/>
+            <Rectangle Grid.ColumnSpan="2" IsHitTestVisible="False" Opacity="0.5">
+                <Rectangle.Fill>
+                    <DrawingBrush TileMode="Tile" Viewport="0,0,72,72" ViewportUnits="Absolute">
+                        <DrawingBrush.Drawing>
+                            <GeometryDrawing Brush="Transparent">
+                                <GeometryDrawing.Pen>
+                                    <Pen Brush="#12E8B04A" Thickness="1"/>
+                                </GeometryDrawing.Pen>
+                                <GeometryDrawing.Geometry>
+                                    <GeometryGroup>
+                                        <LineGeometry StartPoint="0,0" EndPoint="72,0"/>
+                                        <LineGeometry StartPoint="0,0" EndPoint="0,72"/>
+                                    </GeometryGroup>
+                                </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+                        </DrawingBrush.Drawing>
+                    </DrawingBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+
+            <StackPanel Grid.Column="0" x:Name="DockPanel" Orientation="Horizontal"
+                        VerticalAlignment="Center" Margin="12,0,6,0" ClipToBounds="False"/>
+
+            <Border x:Name="LaunchBorder" Grid.Column="1" Margin="0,6,8,6" Background="#0FE8B04A"
+                    BorderBrush="#44E8B04A" BorderThickness="1" CornerRadius="1"
+                    MouseEnter="LaunchBorder_MouseEnter" MouseLeave="LaunchBorder_MouseLeave">
+                <Grid ClipToBounds="True">
+                    <Rectangle x:Name="ScanLine" Height="2" VerticalAlignment="Top"
+                               Fill="#AAE8B04A" Opacity="0.15" IsHitTestVisible="False"/>
+                    <Rectangle x:Name="LaunchSweep" Width="70" HorizontalAlignment="Left"
+                               Opacity="0" IsHitTestVisible="False">
+                        <Rectangle.Fill>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                <GradientStop Color="#00E8B04A" Offset="0.00"/>
+                                <GradientStop Color="#80E8B04A" Offset="0.50"/>
+                                <GradientStop Color="#00E8B04A" Offset="1.00"/>
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                        <Rectangle.RenderTransform>
+                            <TranslateTransform x:Name="LaunchSweepT" X="-80"/>
+                        </Rectangle.RenderTransform>
+                    </Rectangle>
+                    <Button x:Name="HubBtn" Content="▣ LAUNCHPAD" Style="{StaticResource HubKey}"
+                            Background="Transparent" BorderThickness="0"
+                            Padding="30,0" MinWidth="128" FontSize="11.5" FontFamily="Bahnschrift" FontWeight="SemiBold"
+                            Click="HubBtn_Click"
+                            ToolTip="Open Launchpad"/>
+                </Grid>
+            </Border>
+
+            <!-- drag this edge to change the dock width -->
+            <Border x:Name="ResizeHandle" Grid.ColumnSpan="2" Width="10"
+                    HorizontalAlignment="Right" Background="Transparent"
+                    Cursor="SizeWE" ToolTip="拖动调整导航栏宽度"
+                    MouseLeftButtonDown="ResizeHandle_MouseDown"
+                    MouseMove="ResizeHandle_MouseMove"
+                    MouseLeftButtonUp="ResizeHandle_MouseUp"/>
+        </Grid>
+    </Grid>
+</Window>
