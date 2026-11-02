@@ -195,8 +195,7 @@ public partial class MainWindow : Window
             File.WriteAllText(LayoutFile, JsonSerializer.Serialize(l, new JsonSerializerOptions { WriteIndented = true }));
         }
         catch { }
-        e.Cancel = true;
-        Hide();
+        // no e.Cancel: closing the window must shut the process down
     }
 
     private void StartClock()
@@ -762,7 +761,7 @@ public partial class MainWindow : Window
     public void HideWithAnimation()
     {
         SaveLayout();
-        Hide();
+        Close();   // closing the window shuts the process down
     }
 
     private void SaveLayout()
