@@ -739,7 +739,7 @@ public partial class MainWindow : Window
                 UseShellExecute = true,
                 WorkingDirectory = Path.GetDirectoryName(path) ?? string.Empty
             });
-            Hide();
+            // keep the launchpad open after starting an app
         }
         catch (Exception ex)
         {
