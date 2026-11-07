@@ -9,7 +9,7 @@
         ShowInTaskbar="False"
         ResizeMode="CanResize"
         MinWidth="720" MinHeight="340"
-        Width="1200" Height="520">
+        Width="1409" Height="938">
 
     <shell:WindowChrome.WindowChrome>
         <shell:WindowChrome CaptionHeight="0" ResizeBorderThickness="7"
